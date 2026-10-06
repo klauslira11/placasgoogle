@@ -1,0 +1,43 @@
+{
+  "name": "qrflow",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jimp": "^0.22.12",
+    "jsqr": "^1.4.0",
+    "nanoid": "^5.0.9",
+    "next": "^15.5.5",
+    "next-auth": "5.0.0-beta.29",
+    "qrcode": "^1.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^2.12.7",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.8.2",
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.14.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^15.4.5",
+    "prisma": "^6.8.2",
+    "tailwindcss": "^4.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.1.0"
+  }
+}

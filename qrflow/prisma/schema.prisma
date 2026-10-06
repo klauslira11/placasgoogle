@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum QrStatus {
+  ACTIVE
+  PAUSED
+}
+
+enum NfcStatus {
+  ACTIVE
+  PAUSED
+}
+
+enum ScanChannel {
+  QR
+  NFC
+}
+
+model User {
+  id            String               @id @default(cuid())
+  name          String
+  email         String               @unique
+  emailVerified DateTime?
+  password      String
+  role          Role                 @default(USER)
+  suspendedAt   DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  qrCodes       QrCode[]
+  resetTokens   PasswordResetToken[]
+}
+
+model QrCode {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  slug           String   @unique
+  destinationUrl String
+  placaNumber    Int?     @unique
+  qrStatus       QrStatus @default(ACTIVE)
+  nfcStatus      NfcStatus @default(ACTIVE)
+  archivedAt     DateTime?
+  fgColor        String   @default("#000000")
+  bgColor        String   @default("#ffffff")
+  margin         Int      @default(4)
+  size           Int      @default(1000)
+  errorLevel     String   @default("M")
+  transparentBg  Boolean  @default(false)
+  scans          Scan[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@index([slug])
+}
+
+model Scan {
+  id            String      @id @default(cuid())
+  qrCodeId      String
+  qrCode        QrCode      @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  channel       ScanChannel @default(QR)
+  createdAt     DateTime @default(now())
+  anonVisitorId String?
+  country       String?
+  device        String?
+  browser       String?
+  os            String?
+  referer       String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  ipHash        String?
+
+  @@index([qrCodeId, createdAt])
+  @@index([qrCodeId, channel, createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model PlacaCounter {
+  id   String @id @default("placa")
+  next Int    @default(1)
+}

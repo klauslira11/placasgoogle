@@ -1,0 +1,16 @@
+Salve aqui a Imagem 1 enviada no chat como:
+
+  placa-padrao.png
+
+O sistema detecta automaticamente o bloco vermelho com contorno pontilhado
+e cola o QR Code no lugar, na mesma posição.
+
+Formatos aceitos (nessa ordem):
+- placa-padrao.png
+- placa-padrao.jpg
+- placa-padrao.jpeg
+- placa.png
+
+Endpoints:
+- QR separado:  GET /api/qr/[id]/png
+- Placa pronta: GET /api/qr/[id]/placa
